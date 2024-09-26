@@ -1,0 +1,31 @@
+version: "3.9"  # Use a recent and supported version
+
+services:
+  mongodb:
+    image: mongo:7.0.5  # Consider using a tagged version for consistency
+    volumes:
+      - mongodb-data:/data/db  # Persistent data volume using a named volume
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mongoadmin  # Set a strong username and password
+      MONGO_INITDB_ROOT_PASSWORD: strongpassword  # Use environment variables for credentials
+      # Additional configuration options as needed (e.g., authentication mechanisms)
+    ports:
+      - "27017:27017"  # Expose port 27017 on host for external access
+      - "27018:27018"  # Expose port 27018 for replica set (if using)
+
+  mongo-express:  # Use official mongo-express image for better support
+    image: mongo-express:1.0.2-20
+    restart: unless-stopped  # Restart automatically unless explicitly stopped
+    environment:
+      ME_CONFIG_MONGODB_ENABLE_ADMIN: false
+      ME_CONFIG_MONGODB_SERVER: mongodb  # Use environment variables for credentials
+      ME_CONFIG_MONGODB_ADMINUSERNAME: mongoadmin
+      ME_CONFIG_MONGODB_ADMINPASSWORD: strongpassword
+      PORT: 8081  # Set a different port to avoid conflicts
+    ports:
+      - "8081:8081"
+    depends_on:
+      - mongodb  # Wait for MongoDB to be ready before starting
+
+volumes:
+  mongodb-data:  # Named volume for persistence

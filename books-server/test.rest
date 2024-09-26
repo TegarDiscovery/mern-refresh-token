@@ -1,0 +1,30 @@
+### Pengujian Registrasi
+POST http://localhost:3001/auth/register
+Content-Type: application/json
+
+{
+    "email": "tegar@mail.com",
+    "password": "12345678",
+    "full_name": "Tegar Penemuan"
+}
+
+### Pengujian Login
+POST http://localhost:3001/auth/login
+Content-Type: application/json
+
+{
+    "email": "tegar@mail.com",
+    "password": "12345678"
+}
+
+### Pengujian Refresh Token
+POST http://localhost:3000/auth/refresh
+Content-Type: application/json
+
+{
+  "refresh_token": "your_refresh_token_here"
+}
+
+### Pengujian Mendapatkan Buku
+GET http://localhost:3001/books
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ZjRlMGU0ZmI2YTcwNGJjNzJkMDllZSIsImVtYWlsIjoidGVnYXJAbWFpbC5jb20iLCJmdWxsX25hbWUiOiJUZWdhciBQZW5lbXVhbiIsImlhdCI6MTcyNzMyNzIyMn0.h-J0hiZOOnyTNaxEauIjSmHRwkV9FBylUosS_1iEI8I
