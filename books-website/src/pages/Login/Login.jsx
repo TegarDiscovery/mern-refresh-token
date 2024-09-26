@@ -14,13 +14,37 @@ import { useNavigate } from "react-router-dom"
 import App from "../../layouts/app"
 
 import './login.css'
+import { useState } from "react"
+import axios from "axios"
 
 function Login() {
   const navigate = useNavigate()
-  const submitHandler = (e) => {
-    e.preventDefault()
+  const [email,setEmail] = useState('')
+  const [password, setPassword] = useState('')
 
-    navigate('/books')
+  const submitHandler = async (e) => {
+    // cek username dan password 
+    // console.log(email);
+    // console.log(password);
+
+    try {
+      e.preventDefault()
+
+      const res = await axios.post("http://localhost:3001/auth/login", {
+        email: email,
+        password: password,
+      })
+
+      // console.log(res);
+
+      localStorage.setItem('access_token',res.data.data.access_token)
+      localStorage.setItem('refresh_token',res.data.data.refresh_token)
+      
+      navigate('/book')
+    } catch (error) {
+      console.log(error);
+    }
+    
   }
 
   return (
@@ -32,11 +56,11 @@ function Login() {
             <Form onSubmit={submitHandler}>
               <FormGroup className="mb-2">
                 <FormLabel>Email</FormLabel>
-                <FormControl type="email" name="email" />
+                <FormControl type="email" name="email" value={email} onChange={(e) => setEmail(e.target.value)}/>
               </FormGroup>
               <FormGroup className="mb-3">
                 <FormLabel>Password</FormLabel>
-                <FormControl type="password" name="password" />
+                <FormControl type="password" name="password" value={password} onChange={(e) => setPassword(e.target.value)}/>
               </FormGroup>
               <Button type="submit">Login</Button>
             </Form>
