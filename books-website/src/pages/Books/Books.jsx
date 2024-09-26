@@ -2,7 +2,7 @@ import { Button, Container, Table } from "react-bootstrap"
 import { useNavigate } from "react-router-dom"
 import App from "../../layouts/app"
 import { useEffect, useState } from "react"
-import axios from "axios"
+import instance from "../../utils/axios/instance"
 
 function Books() {
   const navigate = useNavigate()
@@ -16,7 +16,7 @@ function Books() {
   useEffect(()=>{
     async function getData() {
       try {
-        const res = await axios.get('http://localhost:3001/books', {
+        const res = await instance.get('http://localhost:3001/books', {
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('access_token')}`
           }

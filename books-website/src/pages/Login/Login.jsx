@@ -15,7 +15,7 @@ import App from "../../layouts/app"
 
 import './login.css'
 import { useState } from "react"
-import axios from "axios"
+import instance from "../../utils/axios/instance"
 
 function Login() {
   const navigate = useNavigate()
@@ -30,7 +30,7 @@ function Login() {
     try {
       e.preventDefault()
 
-      const res = await axios.post("http://localhost:3001/auth/login", {
+      const res = await instance.post("http://localhost:3001/auth/login", {
         email: email,
         password: password,
       })
