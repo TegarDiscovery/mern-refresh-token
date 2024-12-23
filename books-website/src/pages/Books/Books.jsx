@@ -1,42 +1,45 @@
-import { Button, Container, Table } from "react-bootstrap"
-import { useNavigate } from "react-router-dom"
-import App from "../../layouts/app"
-import { useEffect, useState } from "react"
-import instance from "../../utils/axios/instance"
+import { Button, Container, Table } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
+import App from "../../layouts/app";
+import { useEffect, useState } from "react";
+import instance from "../../utils/axios/instance";
 
 function Books() {
-  const navigate = useNavigate()
-  const [books, setBooks] = useState([])
+  const navigate = useNavigate();
+  const [books, setBooks] = useState([]);
   const logoutHandler = () => {
-    localStorage.clear('access_token')
-    localStorage.clear('refresh_token')
-    navigate('/login')
-  }
+    localStorage.clear("access_token");
+    localStorage.clear("refresh_token");
+    navigate("/login");
+  };
 
-  useEffect(()=>{
+  useEffect(() => {
     async function getData() {
       try {
-        const res = await instance.get('http://localhost:3001/books', {
-          headers: {
-            'Authorization': `Bearer ${localStorage.getItem('access_token')}`
-          }
-        })
+        // const res = await instance.get('http://localhost:3001/books', {
+        //   headers: {
+        //     'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+        //   }
+        // })
+
+        // token di handle di interceptor request
+        const res = await instance.get("http://localhost:3001/books");
 
         // console.log(res);
-        
-        setBooks(res.data.data.books)
+
+        setBooks(res.data.data.books);
       } catch (error) {
         // console.log(error);
-        if(error.response.status === 401) {
-          localStorage.clear('access_token')
-          localStorage.clear('refresh_token')
-          navigate('/login')
+        if (error.response.status === 401) {
+          localStorage.clear("access_token");
+          localStorage.clear("refresh_token");
+          navigate("/login");
         }
       }
     }
 
-    getData()
-  },[])
+    getData();
+  }, []);
 
   return (
     <App>
@@ -61,10 +64,12 @@ function Books() {
             ))}
           </tbody>
         </Table>
-        <Button size="sm" variant="danger" onClick={logoutHandler}>Logout</Button>
+        <Button size="sm" variant="danger" onClick={logoutHandler}>
+          Logout
+        </Button>
       </Container>
     </App>
-  )
+  );
 }
 
-export default Books
+export default Books;
